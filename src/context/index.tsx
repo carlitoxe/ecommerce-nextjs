@@ -3,6 +3,7 @@
 import { createContext, useState, useEffect } from "react";
 import { apiUrl } from "../api"
 import { totalPrice } from "../utils";
+import useGetProducts from "@/hooks/useGetProducts";
 
 export const ShoppingCartContext = createContext();
 
@@ -117,44 +118,61 @@ export const ShoppingCartProvider = ({ children }) => {
     }
     const handleDelete = (e, id) => { 
         e.stopPropagation();
-        const cartUpdated = cartProducts.filter(product => product.id !== id)
+        const cartUpdated = cartProducts.filter((product: TProduct) => product.id !== id)
         setCartProducts(cartUpdated)
         updateCartStorage(cartUpdated)
         setCount(count - 1);
         // console.log(cartProducts);
     }
 
-  const cartCount = cartProducts?.reduce((sum: number, product:TProduct) => sum + product.qty, 0);
+  const cartCount = cartProducts?.reduce((sum: number, product: TProduct) => sum + product.qty, 0);
 
     // console.log('order', orders);
 
     // Get Products
     const [products, setProducts] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [loadingProducts, setLoadingProducts] = useState(false);
+    // const products: TProduct[] = await useGetProducts();
 
-    async function getProducts() {
-      const res = await fetch('https://fakestoreapi.com/products');
-      if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
-      }
-      return res.json();
+    // async function getProducts() {
+    //   const res = await fetch('https://fakestoreapi.com/products');
+    //   if (!res.ok) {
+    //     // This will activate the closest `error.js` Error Boundary
+    //     throw new Error('Failed to fetch data')
+    //   }
+    //   return res.json();
+    // }
+
+    const getProducts = () => {
+      setLoadingProducts(true);
+      return fetch(`https://fakestoreapi.com/products`)
+        .then(res => res.json())
+        // .then(data => setProducts(data))
+        .catch(err => console.error(err))
+        .finally(() => setLoadingProducts(false))
     }
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     fetch(`https://fakestoreapi.com/products`)
-    //       .then(res => res.json())
-    //       .then(data => setProducts(data))
-    //       .catch(err => console.error(err))
-    //       .finally(() => setIsLoading(false))
-    // }, [])
 
+    useEffect(() => {
+        const getData = async () => {
+          const res = await getProducts();
+          setProducts(res)
+        }
+        getData();
+        // setIsLoading(true);
+        // fetch(`https://fakestoreapi.com/products`)
+        //   .then(res => res.json())
+        //   .then(data => setProducts(data))
+        //   .catch(err => console.error(err))
+        //   .finally(() => setIsLoading(false))
+    }, [])
+    
+    
     // Search Products by title
       const [ searchValue, setSearchValue ] = useState('');
 
-      const onSearchValue = e => {
-        setSearchValue(e.target.value)
-      }
+      // const onSearchValue = e => {
+      //   setSearchValue(e.target.value)
+      // }
 
       let searchedProducts = []
     
@@ -183,11 +201,11 @@ export const ShoppingCartProvider = ({ children }) => {
             closeCheckoutSideMenu,
             orders,
             setOrders,
-            products,
-            setProducts,
-            isLoading,
+            // products,
+            // setProducts,
+            loadingProducts,
             searchValue,
-            onSearchValue,
+            // onSearchValue,
             setSearchValue,
             searchedProducts,
             handleCheckout,
@@ -196,7 +214,7 @@ export const ShoppingCartProvider = ({ children }) => {
             total,
             addProductsToCard,
             cartCount,
-            getProducts
+            // getProducts
         }}
         >
             {children}

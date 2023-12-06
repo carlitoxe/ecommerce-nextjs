@@ -6,6 +6,7 @@ import { ShoppingCartProvider } from '@/context'
 import CheckoutSideMenu from '@/components/CheckoutSideMenu'
 import { Suspense } from 'react'
 import Loading from './loading'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,8 +25,11 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Navbar />
-          <main className='flex flex-col justify-center items-center pt-24'>{children}</main>
+          {/* <Suspense fallback={<Loading />}> */}
+            <main className='flex flex-col justify-center items-center pt-24'>{children}</main>
+          {/* </Suspense> */}
           <CheckoutSideMenu />
+          <Footer />
         </body>
       </html>
     </ShoppingCartProvider>
