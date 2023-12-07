@@ -26,7 +26,7 @@ export default function Home() {
         <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} loadingProducts={loadingProducts} />
    
      
-            <ProductList products={searchedProducts} loading={loadingProducts} />
+            <ProductList products={searchedProducts} loading={loadingProducts} searchValue={searchValue} />
 
          {/* <section className="grid gap-8 grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full max-w-screen-lg mt-4 min-h-96">
             {searchedProducts?.map(product => (

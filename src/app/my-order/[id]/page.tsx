@@ -40,8 +40,8 @@ export default function MyOrder({ params }: { params: { id: string } }) {
               <OrderCard key={product.id} {...product} />
               ))} 
               <div className="flex justify-between items-center px-2 mt-2 text-lg">
-                <p>Items : <span className="font-medium">{order.totalProducts}</span></p>
-                <p>Total : <span className="text-lime-400 font-medium">${order?.totalPrice.toFixed(2)}</span></p>
+                <p>Items: <span className="font-medium">{order.totalProducts}</span></p>
+                <p>Total: <span className="text-lime-400 font-medium">${order?.totalPrice.toFixed(2)}</span></p>
               </div>
               
             </>

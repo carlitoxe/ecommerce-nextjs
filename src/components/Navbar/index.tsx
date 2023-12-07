@@ -45,7 +45,7 @@ export default function Navbar() {
 
     return(
         <>
-        <nav className="hidden lg:flex justify-between items-center fixed w-full pt-5 pb-3 px-10 text-sm top-0 z-50 bg-black border-b border-gray-600">
+        <nav className="hidden lg:flex justify-between items-center fixed w-full pt-5 pb-3 px-8 text-sm top-0 z-50 bg-black border-b border-gray-600">
           <ul className="flex items-center text-white gap-0.5">
             <li className="font-semibold text-lg mr-3 py-0.5">
               <Link href="/">

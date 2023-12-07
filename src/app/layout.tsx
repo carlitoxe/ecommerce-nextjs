@@ -26,7 +26,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Navbar />
           {/* <Suspense fallback={<Loading />}> */}
-            <main className='flex flex-col justify-center items-center pt-24'>{children}</main>
+            <main className='flex flex-col justify-center items-center pt-20'>{children}</main>
           {/* </Suspense> */}
           <CheckoutSideMenu />
           <Footer />
