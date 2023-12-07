@@ -4,7 +4,7 @@ export default function SkeletonLoading({ qty }: { qty: number}) {
   return Array(qty)
     .fill(true)
     .map((_, i) => (
-      <div role="status" className="w-56 h-[308px] border rounded-lg border-gray-200 shadow animate-pulse dark:border-gray-700 text-center">
+      <div key={i} role="status" className="w-56 h-[308px] border rounded-lg border-gray-200 shadow animate-pulse dark:border-gray-700 text-center">
         <figure className="flex items-center justify-center w-full h-[224px] mb-3 bg-gray-300 rounded dark:bg-gray-700 ">
             <PhotoIcon className="w-14 h-14 text-gray-200 dark:text-gray-600" />
         </figure>
