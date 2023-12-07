@@ -24,6 +24,39 @@ export const ShoppingCartProvider = ({ children }: { children: React.ReactNode }
     const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] = useState(false);
     const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
     const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
+
+        // Get Products
+        const [products, setProducts] = useState<TProduct[]>([]);
+        const [loadingProducts, setLoadingProducts] = useState(true);
+        // const products: TProduct[] = await useGetProducts();
+    
+        // async function getProducts() {
+        //   const res = await fetch('https://fakestoreapi.com/products');
+        //   if (!res.ok) {
+        //     // This will activate the closest `error.js` Error Boundary
+        //     throw new Error('Failed to fetch data')
+        //   }
+        //   return res.json();
+        // }
+    
+        const getProducts = async () => {
+          setLoadingProducts(true);
+          return await fetch(`https://fakestoreapi.com/products`)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+            .catch(err => console.error(err))
+            .finally(() => setLoadingProducts(false))
+        }
+    
+        useEffect(() => {
+            getProducts();
+            // setIsLoading(true);
+            // fetch(`https://fakestoreapi.com/products`)
+            //   .then(res => res.json())
+            //   .then(data => setProducts(data))
+            //   .catch(err => console.error(err))
+            //   .finally(() => setIsLoading(false))
+        }, [])
     
     // Prodduct Detail - Show Product (Info)
     const [productToShow, setProductToShow] = useState<TProduct | any>({});
@@ -96,7 +129,7 @@ export const ShoppingCartProvider = ({ children }: { children: React.ReactNode }
 
      useEffect(() => {
       if (localStorageIsAvailable) {
-        localStorage.setItem('orders', JSON.stringify(orders));
+        localStorage.setItem('orders', JSON.stringify(orders)); 
       }
     }, [orders])
  
@@ -140,45 +173,7 @@ export const ShoppingCartProvider = ({ children }: { children: React.ReactNode }
 
   const cartCount = cartProducts?.reduce((sum: number, product: CartItemType) => sum + product.qty, 0);
 
-    // console.log('order', orders);
-
-    // Get Products
-    const [products, setProducts] = useState<TProduct[]>([]);
-    const [loadingProducts, setLoadingProducts] = useState(false);
-    // const products: TProduct[] = await useGetProducts();
-
-    // async function getProducts() {
-    //   const res = await fetch('https://fakestoreapi.com/products');
-    //   if (!res.ok) {
-    //     // This will activate the closest `error.js` Error Boundary
-    //     throw new Error('Failed to fetch data')
-    //   }
-    //   return res.json();
-    // }
-
-    const getProducts = () => {
-      setLoadingProducts(true);
-      return fetch(`https://fakestoreapi.com/products`)
-        .then(res => res.json())
-        // .then(data => setProducts(data))
-        .catch(err => console.error(err))
-        .finally(() => setLoadingProducts(false))
-    }
-
-    useEffect(() => {
-        const getData = async () => {
-          const res = await getProducts();
-          setProducts(res)
-        }
-        getData();
-        // setIsLoading(true);
-        // fetch(`https://fakestoreapi.com/products`)
-        //   .then(res => res.json())
-        //   .then(data => setProducts(data))
-        //   .catch(err => console.error(err))
-        //   .finally(() => setIsLoading(false))
-    }, [])
-    
+    // console.log('order', orders)
     
     // Search Products by title
       const [ searchValue, setSearchValue ] = useState('');
