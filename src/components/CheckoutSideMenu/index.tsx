@@ -24,7 +24,7 @@ export default function CheckoutSideMenu() {
         </div>
         <div className="px-2 flex-1">
             {cartProducts?.map(product => (
-                <OrderCard key={product.id} {...product} handleDelete={handleDelete} />
+                <OrderCard key={product.id} {...product} />
             ))}
         </div>
             <div className="pr-2 pl-4">

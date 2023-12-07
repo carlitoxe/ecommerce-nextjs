@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-export default function SearchBar({ searchValue, setSearchValue, loadingProducts }) {
-  const onSearchValue = e => {
-    setSearchValue(e.target.value)
+type SearchBarType = {
+  searchValue: string
+  setSearchValue: Function
+  loadingProducts: boolean
+}
+
+export default function SearchBar({ searchValue, setSearchValue, loadingProducts }: SearchBarType) {
+  const onSearchValue = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(target.value)
   }
 
   return (

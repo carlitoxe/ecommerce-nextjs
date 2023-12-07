@@ -2,7 +2,13 @@ import { useContext } from "react"
 import { CalendarDaysIcon, ShoppingBagIcon, CurrencyDollarIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 import { ShoppingCartContext } from "@/context"
 
-export default function OrdersCard({ totalPrice, totalProducts, date }) {
+type OrderPreview = {
+    totalPrice: number
+    totalProducts: number
+    date: string
+}
+
+export default function OrdersCard({ totalPrice, totalProducts, date }: OrderPreview) {
     const { openProductDetail, closeCheckoutSideMenu, setProductToShow, cartProducts, setCartProducts, setCount, count } = useContext(ShoppingCartContext)
 
     return (

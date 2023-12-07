@@ -5,7 +5,7 @@ import { ShoppingCartIcon } from '@heroicons/react/20/solid'
 import { useContext } from 'react';
 import { ShoppingCartContext } from '@/context';
 
-export default function CardProduct({ id, title, price, category, image, description }) {
+export default function CardProduct({ id, title, price, category, image, description }: TProduct) {
     const { count, 
         setCount, 
         setProductToShow, 
@@ -18,7 +18,7 @@ export default function CardProduct({ id, title, price, category, image, descrip
         addProductsToCard
     } = useContext(ShoppingCartContext);
     
-    const showProduct = (productDetail) => {
+    const showProduct = (productDetail: TProduct) => {
         // setOpenModal(state => !state)
         openProductDetail();
         setProductToShow(productDetail);

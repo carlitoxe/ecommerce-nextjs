@@ -1,13 +1,15 @@
 'use client'
 
 import { createContext, useState, useEffect } from "react";
-import { apiUrl } from "../api"
+// import { apiUrl } from "../api"
 import { totalPrice } from "../utils";
-import useGetProducts from "@/hooks/useGetProducts";
+// import useGetProducts from "@/hooks/useGetProducts";
 
-export const ShoppingCartContext = createContext();
+const defaultValue = {} as ContextState;
 
-export const ShoppingCartProvider = ({ children }) => {
+export const ShoppingCartContext = createContext(defaultValue);
+
+export const ShoppingCartProvider = ({ children }: { children: React.ReactNode }) => {
     const [count, setCount] = useState(0);
 
     // Product Detail Modal Mode
@@ -24,25 +26,33 @@ export const ShoppingCartProvider = ({ children }) => {
     const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
     
     // Prodduct Detail - Show Product (Info)
-    const [productToShow, setProductToShow] = useState({});
+    const [productToShow, setProductToShow] = useState<TProduct | any>({});
 
     // Shopping Cart with Local Storage
-    if (!localStorage.getItem('cart')) { 
-      localStorage.setItem('cart', JSON.stringify([]));
-    }
-    console.log(localStorage.getItem('cart'));
+      let cartString: string | null | false
+      const localStorageIsAvailable = typeof localStorage !== 'undefined'
+
+        cartString = localStorageIsAvailable && localStorage.getItem('cart')
+        if (localStorageIsAvailable && !localStorage.getItem('cart')) { 
+          localStorage.setItem('cart', JSON.stringify([]));
+         }
+      
+    // const parsedCart: TProduct[] = JSON.parse(cartString)
     // console.log(localStorageCart);
-    // let parsedCart = JSON.parse(localStorageCart)
-    const [cartProducts, setCartProducts] = useState(JSON.parse(localStorage.getItem('cart')));
+
+    const [cartProducts, setCartProducts] = useState(JSON.parse(cartString || '[]'));
     // console.log(localStorageCart);
     // Local Storage - Cart
-    useEffect(() => {
-      localStorage.setItem('cart', JSON.stringify(cartProducts));
-    }, [cartProducts])
 
-    const updateCartStorage = (cartProducts) => {
+      useEffect(() => {
+        if (localStorageIsAvailable) {
+          localStorage.setItem('cart', JSON.stringify(cartProducts));
+        }
+      }, [cartProducts])
+
+    const updateCartStorage = (cartProducts: TProduct[]) => {
       try {
-        localStorage.setItem('cart', JSON.stringify(cartProducts));
+        localStorageIsAvailable && localStorage.setItem('cart', JSON.stringify(cartProducts));
       } catch (err) {
         console.error(err)
       }
@@ -52,9 +62,9 @@ export const ShoppingCartProvider = ({ children }) => {
     const isCartProducts = cartProducts?.length !== 0;
     const total = totalPrice(cartProducts);
     
-    const addProductsToCard = (e, productData) => {
+    const addProductsToCard = (e: Event, productData: CartItemType) => {
       e.stopPropagation();
-      const isInCart = cartProducts.some(product => product.id === productData.id);
+      const isInCart = cartProducts.some((product: TProduct) => product.id === productData.id);
       // productData.qty = qty
       // console.log(productData);
       if (!isInCart) {
@@ -62,7 +72,7 @@ export const ShoppingCartProvider = ({ children }) => {
           productData.qty = 1;
           setCartProducts([...cartProducts, productData]);
       } else {
-          const productToUpdate = cartProducts.find(product => product.id === productData.id);
+          const productToUpdate = cartProducts.find((product: TProduct) => product.id === productData.id);
           productToUpdate.qty += 1;
           // console.log(productToUpdate);
           // setCartProducts([...cartProducts, {...productData, qty}]);
@@ -73,38 +83,41 @@ export const ShoppingCartProvider = ({ children }) => {
       openCheckoutSideMenu();  
   }
 
-  const totalQty = cartProducts?.reduce((sum, product) => sum + product.qty, 0);
+  const totalQty = cartProducts?.reduce((sum: number, product: CartItemType) => sum + product.qty, 0);
 
      // ORDERS with Local Storage
-     if (!localStorage.getItem('orders')) {
+     let orderString: string | null | false = localStorageIsAvailable && localStorage.getItem('orders');
+
+     if (localStorageIsAvailable && !localStorage.getItem('orders')) {
        localStorage.setItem('orders', JSON.stringify([]));
      }
 
-     const [orders, setOrders] = useState(JSON.parse(localStorage.getItem('orders')));
+     const [orders, setOrders] = useState(JSON.parse(orderString || '[]'));
 
      useEffect(() => {
-      localStorage.setItem('orders', JSON.stringify(orders));
+      if (localStorageIsAvailable) {
+        localStorage.setItem('orders', JSON.stringify(orders));
+      }
     }, [orders])
  
-     const updateOrdersStorage = (orders) => {
+     const updateOrdersStorage = (orders: TOrder[]) => {
        try {
          localStorage.setItem('orders', JSON.stringify(orders));
        } catch (err) {
          console.error(err)
        }
      }
-    
-    const handleCheckout = () => {
-      const date = new Date();
-      // const timeNow = Date.now();
+     
+     const handleCheckout = () => {
+       const date = new Date();
       if (isCartProducts) {
         const orderToAdd = {
           id: crypto.randomUUID(),
           date: date.toLocaleDateString(),
-              products: cartProducts,
-              totalProducts: totalQty,
-              totalPrice: total,
-          }
+          products: cartProducts,
+          totalProducts: totalQty,
+          totalPrice: total,
+        }
           setOrders([...orders, orderToAdd]);
           setCartProducts([]);
           updateCartStorage([])
@@ -116,21 +129,21 @@ export const ShoppingCartProvider = ({ children }) => {
         updateOrdersStorage(orders)
       // console.log(cartProducts);
     }
-    const handleDelete = (e, id) => { 
+    const handleDelete = (e: Event, id: number) => { 
         e.stopPropagation();
-        const cartUpdated = cartProducts.filter((product: TProduct) => product.id !== id)
+        const cartUpdated = cartProducts.filter((product: CartItemType) => product.id !== id)
         setCartProducts(cartUpdated)
         updateCartStorage(cartUpdated)
         setCount(count - 1);
         // console.log(cartProducts);
     }
 
-  const cartCount = cartProducts?.reduce((sum: number, product: TProduct) => sum + product.qty, 0);
+  const cartCount = cartProducts?.reduce((sum: number, product: CartItemType) => sum + product.qty, 0);
 
     // console.log('order', orders);
 
     // Get Products
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState<TProduct[]>([]);
     const [loadingProducts, setLoadingProducts] = useState(false);
     // const products: TProduct[] = await useGetProducts();
 
@@ -187,8 +200,8 @@ export const ShoppingCartProvider = ({ children }) => {
         value={{ 
             count, 
             setCount,
-            openModal, 
-            setOpenModal,
+            // openModal, 
+            // setOpenModal,
             productToShow,
             setProductToShow,
             isProductDetailOpen,

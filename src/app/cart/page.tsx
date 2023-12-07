@@ -7,9 +7,9 @@ import OrderCard from "@/components/OrderCard";
 import ProductDetailSide from "@/components/ProductDetailSide";
 
 export default function Cart() {
-    const { cartProducts, handleCheckout, handleDelete, total, isCartProducts, closeCheckoutSideMenu } = useContext(ShoppingCartContext);
+    const { cartProducts, handleCheckout, total, isCartProducts, closeCheckoutSideMenu } = useContext(ShoppingCartContext);
     closeCheckoutSideMenu()
-
+    
     return (
         <>
         <section className="mt-2 w-full sm:w-3/4 lg:w-2/4">
@@ -19,11 +19,11 @@ export default function Cart() {
           {cartProducts?.length ? (
             <div className="px-2 flex-1">
               {cartProducts?.map((product) => (
-                <OrderCard key={product.id} {...product} handleDelete={handleDelete} />
+                <OrderCard key={product.id} {...product} />
               ))}
               <div className="pr-2 pl-4">
                 <p className="flex items-center justify-between pr-2 mt-3 mb-3 text-lg">
-                  <span>Total :</span>
+                  <span>Total:</span>
                   <span className="text-lime-400 text-lg font-medium">${total.toFixed(2)}</span>
                 </p>
                 <div className="flex justify-center mb-4">

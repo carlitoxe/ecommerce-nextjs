@@ -1,14 +1,9 @@
 'use client'
 
-import Image from 'next/image'
-import CardProduct from '@/components/CardProduct';
 import ProductDetailSide from '@/components/ProductDetailSide';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { Suspense, useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ShoppingCartContext } from '@/context';
 import ProductList from '@/components/ProductList';
-import Loading from './loading';
-import useGetProducts from '@/hooks/useGetProducts';
 import SearchBar from '@/components/SearchBar';
 
 export default function Home() {

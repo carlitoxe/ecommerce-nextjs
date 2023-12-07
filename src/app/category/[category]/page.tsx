@@ -5,7 +5,6 @@ import { useContext } from "react"
 import CardProduct from "@/components/CardProduct"
 import ProductDetailSide from "@/components/ProductDetailSide"
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid"
-import useGetProducts from "@/hooks/useGetProducts"
 import SearchBar from "@/components/SearchBar"
 import ProductList from "@/components/ProductList"
 

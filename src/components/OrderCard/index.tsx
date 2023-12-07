@@ -3,32 +3,33 @@ import { useContext } from "react";
 import { ShoppingCartContext } from "@/context";
 import { usePathname } from "next/navigation";
 
-export default function OrderCard({ id, title, image, price, description, qty, handleDelete }) {
-  const { openProductDetail, closeCheckoutSideMenu, setProductToShow, cartProducts, setCartProducts, setCount, count } = useContext(ShoppingCartContext);
+export default function OrderCard({ id, title, image, price, description, qty }: CartItemType) {
+  const { openProductDetail, handleDelete, closeCheckoutSideMenu, setProductToShow, cartProducts, setCartProducts, setCount, count } = useContext(ShoppingCartContext);
   const pathname = usePathname();
-
-  const showProduct = (productDetail) => {
+  console.log(pathname);
+  
+  const showProduct = (productDetail: CartItemType) => {
     closeCheckoutSideMenu();
     setProductToShow(productDetail);
     openProductDetail();
   };
 
-  const productToUpdate = cartProducts.find((product) => product.id === id);
+  const productToUpdate: CartItemType = cartProducts.find((product) => product.id === id)!;
   
-  const updateProductQty = (e, productData) => {
+  const updateProductQty = ({target}: React.ChangeEvent<HTMLInputElement>, productData: CartItemType) => {
     // const productToUpdate = cartProducts.find((product) => product.id === productData.id);
-    if (e.target.value) {
-      productToUpdate.qty = parseInt(e.target.value, 10);
+    if (target.value) {
+      productToUpdate.qty = parseInt(target.value, 10);
     }
     setProductToShow(productData);
   };
 
-  const incrementBtn = (productData) => {
+  const incrementBtn = (productData: CartItemType) => {
     productToUpdate.qty += 1;
     setProductToShow(productData);
   };
 
-  const decrementBtn = (productData) => {
+  const decrementBtn = (productData: CartItemType) => {
     if (productToUpdate.qty > 1) {
       productToUpdate.qty -= 1;
     }
@@ -92,7 +93,7 @@ export default function OrderCard({ id, title, image, price, description, qty, h
           <input
             type="text"
             className="bg-gray-50 border-x-0 border-gray-300 h-7 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder={qty}
+            placeholder={qty.toString()}
             value={qty}
             min={0}
             onChange={(e) => updateProductQty(e, { id, title, image, price, description, qty })}
@@ -110,7 +111,7 @@ export default function OrderCard({ id, title, image, price, description, qty, h
       )}
       <div className="flex items-center gap-2">
         <p className="text-lg font-medium text-lime-400">${subTotal}</p>
-        {handleDelete && (
+        {isHomeOrCart && (
           <button onClick={(e) => handleDelete(e, id)}>
             <TrashIcon className="w-6 h-6 text-white hover:text-red-500" />
           </button>

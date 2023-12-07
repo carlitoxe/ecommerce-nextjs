@@ -12,14 +12,9 @@ export default function MyOrder({ params }: { params: { id: string } }) {
     const { isCheckoutSideMenuOpen, closeCheckoutSideMenu, cartProducts, orders } = useContext(ShoppingCartContext);
     const { id } = params;
     // console.log(id);
-    const pathname = usePathname();
-    console.log(pathname);
-    const substr = pathname.substring(11);
+    // const pathname = usePathname();
     
-  
-    const order = substr !== 'last' ? orders?.find(ord => ord.id === id) : orders[orders.length - 1];
-  
-    // console.log('order', order);
+    const order = orders?.find(ord => ord.id === id);
   
       return (
         <>
@@ -36,8 +31,8 @@ export default function MyOrder({ params }: { params: { id: string } }) {
             </div>
             {order ? 
             <>
-              {order?.products?.map(product => (
-              <OrderCard key={product.id} {...product} />
+              {order?.products?.map((product: CartItemType) => (
+                <OrderCard key={product.id} {...product} />
               ))} 
               <div className="flex justify-between items-center px-2 mt-2 text-lg">
                 <p>Items: <span className="font-medium">{order.totalProducts}</span></p>
