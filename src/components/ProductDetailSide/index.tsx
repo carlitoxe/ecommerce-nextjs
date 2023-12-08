@@ -2,6 +2,7 @@
 
 import { ShoppingCartContext } from "@/context"
 import { XCircleIcon, ShoppingCartIcon } from "@heroicons/react/20/solid"
+import Image from "next/image"
 import { useContext } from "react"
 
 export default function ProductDetailSide() {
@@ -19,16 +20,23 @@ export default function ProductDetailSide() {
                     <XCircleIcon className="w-7 h-7 text-white hover:text-red-500"/>
                 </button>
         </div>
-        <figure className="h-2/4 flex justify-center px-2 mb-1">
-            <img 
+        <figure className="h-5/6 flex justify-center px-2 mb-1">
+            {/* <img 
                 src={productToShow.image} 
                 alt='product image' 
                 className="h-full object-cover rounded-lg" 
+            /> */}
+            <Image 
+                src={productToShow.image} 
+                width={300}
+                height={300}
+                className="h-full w-full object-cover rounded-lg" 
+                alt="product image"
             />
 
         </figure>
         <div className="p-2 text-white text-center">
-            <h1 className='text-xl font-bold'>
+            <h1 className='text-xl font-semibold'>
                 {productToShow.title} 
             </h1>
             <p className='mt-1 text-lg'>
