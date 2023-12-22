@@ -174,6 +174,7 @@ export default function Navbar() {
         })}
             <div className="w-full my-2 px-2 border-b border-gray-500">
             </div>
+            {token ? <li className="text-gray-400 flex px-2 rounded-lg py-1.5">{user?.email}</li> :null }  
             { token ? 
                 navigationRight.map(item => {
                 const isActive = pathname === item.href;
