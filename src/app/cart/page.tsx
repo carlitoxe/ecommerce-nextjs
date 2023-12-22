@@ -12,9 +12,9 @@ export default function Cart() {
     
     return (
         <>
-        <section className="mt-2 w-full sm:w-3/4 lg:w-2/4">
+        <section className="mt-4 w-full sm:w-3/4 lg:w-2/4">
           <div className="flex items-center relative justify-center mb-4">
-            <h1 className="text-center text-2xl">Shopping Cart</h1>
+            <h1 className="text-center text-2xl font-semibold">Shopping Cart</h1>
           </div>
           {cartProducts?.length ? (
             <div className="px-2 flex-1">

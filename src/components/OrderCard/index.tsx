@@ -2,11 +2,12 @@ import { TrashIcon, MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { useContext } from "react";
 import { ShoppingCartContext } from "@/context";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function OrderCard({ id, title, image, price, description, qty }: CartItemType) {
   const { openProductDetail, handleDelete, closeCheckoutSideMenu, setProductToShow, cartProducts, setCartProducts, setCount, count } = useContext(ShoppingCartContext);
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
   
   const showProduct = (productDetail: CartItemType) => {
     closeCheckoutSideMenu();
@@ -62,7 +63,14 @@ export default function OrderCard({ id, title, image, price, description, qty }:
           </div>
         )}
         <figure className="w-20 h-20">
-          <img className="w-full h-full rounded-lg object-cover" src={image} alt="" />
+          <Image 
+            width={100} 
+            height={100} 
+            src={image} 
+            alt='product image' 
+            className="w-full h-full rounded-lg" 
+          />
+          {/* <img className="w-full h-full rounded-lg object-cover" src={image} alt="" /> */}
         </figure>
         <p className="text-sm px-1">{title}</p>
       </div>

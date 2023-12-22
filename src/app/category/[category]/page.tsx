@@ -22,7 +22,7 @@ export default function Category({ params }: { params: { category: string } }) {
       <>
         <main className="flex flex-col items-center justify-between">
           <div className="flex items-center relative justify-center mt-2 mb-3">
-              <h1 className="text-center text-2xl capitalize">{categoryName}</h1>
+              <h1 className="text-center text-2xl font-semibold capitalize">{categoryName}</h1>
           </div>
 
           <div className="flex justify-center items-center">

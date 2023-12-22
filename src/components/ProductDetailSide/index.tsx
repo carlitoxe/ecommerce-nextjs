@@ -30,7 +30,7 @@ export default function ProductDetailSide() {
                 src={productToShow.image} 
                 width={300}
                 height={300}
-                className="h-full w-full object-cover rounded-lg" 
+                className="h-full w-full rounded-lg" 
                 alt="product image"
             />
 

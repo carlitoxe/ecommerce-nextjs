@@ -1,16 +1,20 @@
 'use client'
 
 import Link from "next/link"
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { ShoppingCartIcon, Bars3Icon } from "@heroicons/react/20/solid"
 import { useContext } from "react";
 import { ShoppingCartContext } from "@/context";
+import { AuthContext } from "@/hooks/useAuth";
 
 export default function Navbar() {
   const activeStyle = 'flex font-normal bg-gray-600 rounded-lg px-2 py-1.5'; 
   const activeStyleMobile = 'flex w-full font-medium  bg-gray-700 rounded-lg px-2 py-1.5'; 
   const { cartCount } = useContext(ShoppingCartContext)
+  const { user, token } = useContext(AuthContext)
+  console.log(cartCount);
+  
 
   const navigationLeft = [
     { name: 'All', href: '/' },
@@ -27,8 +31,13 @@ export default function Navbar() {
   const navigationRight = [
     { name: 'My Orders', href: '/my-orders' },
     { name: 'My Account', href: '/my-account' },
-    { name: 'Sign In', href: '/sign-in' },
     { name: 'Cart', href: '/cart' },
+    { name: 'Sign Out', href: '/sign-out' },
+  ];
+
+  const navigationRightNoUser = [
+    { name: 'Cart', href: '/cart' },
+    { name: 'Sign In', href: '/sign-in' },
   ];
 
   // function classNames(...classes) {
@@ -69,8 +78,25 @@ export default function Navbar() {
     
           </ul>
           <ul className="flex items-center text-white gap-0.5">
-          <li className="text-gray-400 mr-1">toxedev@gmail.com</li>
-          {navigationRight.map(item => {
+          {token && <li className="text-gray-400 mr-1">{user?.email}</li> }  
+          {token ? 
+            navigationRight.map(item => {
+              const isActive = pathname === item.href;
+                return (
+                  <li key={item.name}>
+                    <Link 
+                      href={item.href}
+                      className={isActive ? activeStyle : 'flex px-2 hover:bg-gray-700 rounded-lg py-1.5 duration-200 ease-in'}
+                    >
+                      {item.href !== '/cart' ? 
+                      item.name : 
+                      <><ShoppingCartIcon className="h-5 w-5 mr-0.5 text-blue-500" /> <span>{cartCount}</span></>
+                      }
+                    </Link>
+                  </li>
+                )
+              })
+              :  navigationRightNoUser.map(item => {
                 const isActive = pathname === item.href;
               return (
                 <li key={item.name}>
@@ -85,7 +111,8 @@ export default function Navbar() {
                   </Link>
                 </li>
               )
-            })}
+            })
+          }
     
           </ul>
         </nav>
@@ -147,7 +174,8 @@ export default function Navbar() {
         })}
             <div className="w-full my-2 px-2 border-b border-gray-500">
             </div>
-            {navigationRight.map(item => {
+            { token ? 
+                navigationRight.map(item => {
                 const isActive = pathname === item.href;
               return (
                 item.href !== '/cart' && 
@@ -158,15 +186,29 @@ export default function Navbar() {
                           className={isActive ? activeStyle : 'flex px-2 hover:bg-gray-800 rounded-lg py-1.5 duration-200 ease-in'}
                           onClick={toggleMenu}
                         >
-                          {item.href !== '/cart' ? 
-                          item.name : 
-                          <><ShoppingCartIcon className="h-5 w-5 mr-0.5 text-blue-500" /> <span className="mr-2">{cartCount}</span></>
-                          }
+                          {item.name}
                         </Link>
                      </li>    
                   )
               )
-              })}
+              }) : navigationRightNoUser.map(item => {
+                const isActive = pathname === item.href;
+                return (
+                  item.href !== '/cart' && 
+                     (
+                        <li key={item.name}>
+                          <Link 
+                            href={item.href}
+                            className={isActive ? activeStyle : 'flex px-2 hover:bg-gray-800 rounded-lg py-1.5 duration-200 ease-in'}
+                            onClick={toggleMenu}
+                          >
+                            {item.name}
+                          </Link>
+                       </li>    
+                    )
+                ) 
+              })
+            }
         </ul>
             
       </div>     

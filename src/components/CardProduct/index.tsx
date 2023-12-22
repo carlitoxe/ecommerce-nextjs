@@ -34,7 +34,7 @@ export default function CardProduct({ id, title, price, category, image, descrip
             className='relative mb-2 rounded-lg' 
         >
             <span className='absolute bottom-0 left-0 bg-gray-600 rounded-xl m-2 text-xs px-2 py-0.5 capitalize'>{category}</span>
-            <Image className='h-56 object-cover rounded-t-lg'  width={222} height={220} src={image} alt='product image' />
+            <Image className='h-56 rounded-t-lg'  width={222} height={220} src={image} alt='product image' />
             {/* <img className='w-full h-56 object-cover rounded-t-lg' src={image} alt={`${title} image`} /> */}
             {/* <button 
                 className='absolute top-0 right-0 flex justify-center items-center bg-white rounded-full w-6 h-6 m-2 text-black p-1 font-medium hover:bg-blue-500 hover:text-white'
